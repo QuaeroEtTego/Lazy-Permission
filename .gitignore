@@ -1,0 +1,9 @@
+### Default ###
+/target
+
+### CLion IDEA ###
+/.idea
+
+### Env File ###
+!.env.example
+.env
