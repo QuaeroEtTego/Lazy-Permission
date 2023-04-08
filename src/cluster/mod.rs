@@ -81,13 +81,6 @@ impl ShardCluster {
             _ = shutdown_subscriber.wait_shutdown() => {},
         }
 
-        join_all(
-            self.shards
-                .iter_mut()
-                .map(|shard| async move { shard.close(CloseFrame::NORMAL).await }),
-        )
-            .await;
-
         handler_shutdown.shutdown().await;
 
         Ok(())
