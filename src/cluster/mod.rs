@@ -2,7 +2,7 @@ mod state;
 
 use std::{error::Error, sync::Arc};
 
-use futures_util::{future::join_all, StreamExt};
+use futures_util::StreamExt;
 use tracing::{debug, error, info, warn};
 use twilight_gateway::{
     error::ReceiveMessageError, stream, stream::ShardEventStream, ConfigBuilder, EventTypeFlags,
@@ -14,7 +14,6 @@ use twilight_model::{
     gateway::{
         payload::outgoing::update_presence::UpdatePresencePayload,
         presence::{MinimalActivity, Status},
-        CloseFrame,
     },
 };
 
