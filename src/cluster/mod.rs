@@ -101,10 +101,10 @@ impl ShardCluster {
                 Ok(event) => event,
                 Err(source) => {
                     if source.is_fatal() {
-                        error!("Fatal error while receiving event: {}.", source);
+                        error!("Fatal error while receiving event: {:?}.", source);
                         return Err(source);
                     } else {
-                        warn!("Error while receiving event: {}.", source);
+                        warn!("Error while receiving event: {:?}.", source);
                         continue;
                     }
                 }
