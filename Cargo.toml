@@ -41,3 +41,7 @@ panic = "abort"
 [profile.release.package."*"]
 codegen-units = 1
 strip = true
+
+[profile.release.build-override]
+codegen-units = 1
+strip = true
