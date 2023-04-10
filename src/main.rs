@@ -37,11 +37,11 @@ fn main() -> ExitCode {
 async fn async_main() -> LazyPermissionResult<()> {
     let config = Config::load()?;
 
-    Logger::init(config.log());
+    Logger::init(&config.log);
 
     info!("LazyPermission v{}", VERSION);
 
-    let cluster = ShardCluster::new(config.discord()).await?;
+    let cluster = ShardCluster::new(&config.discord).await?;
     let cluster_shutdown = Shutdown::new();
 
     cluster.set_interactions(&[]).await?;

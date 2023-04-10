@@ -10,8 +10,8 @@ pub use log::LogConfig;
 
 #[derive(Debug)]
 pub struct Config {
-    discord: DiscordConfig,
-    log: LogConfig,
+    pub discord: DiscordConfig,
+    pub log: LogConfig,
 }
 
 impl Config {
@@ -24,14 +24,6 @@ impl Config {
             discord: DiscordConfig::new().map_err(ConfigError::Discord)?,
             log: LogConfig::new().map_err(ConfigError::Log)?,
         })
-    }
-
-    pub fn discord(&self) -> &DiscordConfig {
-        &self.discord
-    }
-
-    pub fn log(&self) -> &LogConfig {
-        &self.log
     }
 }
 
