@@ -23,12 +23,6 @@ use super::util::{Shutdown, ShutdownSubscriber};
 
 pub use state::ClusterState;
 
-const EVENT_FLAGS: EventTypeFlags = EventTypeFlags::from_bits_truncate(
-    EventTypeFlags::INTERACTION_CREATE.bits()
-        | EventTypeFlags::READY.bits()
-        | EventTypeFlags::RESUMED.bits(),
-);
-
 pub struct ShardCluster {
     shards: Vec<Shard>,
     state: ClusterState,
@@ -43,9 +37,12 @@ impl ShardCluster {
         let application_id = http.current_user_application().await?.model().await?.id;
         let current_user_id = http.current_user().await?.model().await?.id;
 
+        let event_flags =
+            EventTypeFlags::INTERACTION_CREATE | EventTypeFlags::READY | EventTypeFlags::RESUMED;
+
         let shard_config = ConfigBuilder::new(token, Intents::empty())
-            .event_types(EVENT_FLAGS)
-            .presence(get_presence())
+            .event_types(event_flags)
+            .presence(presence())
             .build();
 
         let shards = stream::create_recommended(&http, shard_config, |_, builder| builder.build())
@@ -124,17 +121,17 @@ impl ShardCluster {
     }
 }
 
-fn get_presence() -> UpdatePresencePayload {
-    UpdatePresencePayload::new(
-        vec![MinimalActivity {
-            kind: Default::default(),
-            name: "Lazy with permissions".to_string(),
-            url: None,
-        }
-        .into()],
-        false,
-        None,
-        Status::Online,
-    )
-    .unwrap()
+fn presence() -> UpdatePresencePayload {
+    let activity = MinimalActivity {
+        kind: Default::default(),
+        name: "Lazy with permissions".to_string(),
+        url: None,
+    };
+
+    UpdatePresencePayload {
+        activities: vec![activity.into()],
+        afk: false,
+        since: None,
+        status: Status::Online,
+    }
 }
