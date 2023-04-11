@@ -2,11 +2,11 @@ use tracing::info;
 
 use twilight_model::gateway::{event::Event, payload::incoming::Ready, ShardId};
 
-use super::cluster::ShardState;
+use super::cluster::ClusterState;
 use super::util::ShutdownSubscriber;
 
 pub async fn handle(
-    _state: ShardState,
+    _state: ClusterState,
     event: Event,
     shard_id: ShardId,
     mut _shutdown_subscriber: ShutdownSubscriber,

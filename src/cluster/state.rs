@@ -8,15 +8,15 @@ use twilight_model::id::{
 
 #[derive(Clone)]
 #[repr(transparent)]
-pub struct ShardState(Arc<ShardStateRef>);
+pub struct ClusterState(Arc<ClusterStateRef>);
 
-impl ShardState {
+impl ClusterState {
     pub fn new(
         application_id: Id<ApplicationMarker>,
         current_user_id: Id<UserMarker>,
         http: Arc<HttpClient>,
     ) -> Self {
-        Self(Arc::new(ShardStateRef {
+        Self(Arc::new(ClusterStateRef {
             application_id,
             current_user_id,
             http,
@@ -24,15 +24,15 @@ impl ShardState {
     }
 }
 
-impl Deref for ShardState {
-    type Target = ShardStateRef;
+impl Deref for ClusterState {
+    type Target = ClusterStateRef;
 
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-pub struct ShardStateRef {
+pub struct ClusterStateRef {
     pub application_id: Id<ApplicationMarker>,
     pub current_user_id: Id<UserMarker>,
     pub http: Arc<HttpClient>,

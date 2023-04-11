@@ -21,7 +21,7 @@ use super::config::DiscordConfig;
 use super::event;
 use super::util::{Shutdown, ShutdownSubscriber};
 
-pub use state::ShardState;
+pub use state::ClusterState;
 
 const EVENT_FLAGS: EventTypeFlags = EventTypeFlags::from_bits_truncate(
     EventTypeFlags::INTERACTION_CREATE.bits()
@@ -31,7 +31,7 @@ const EVENT_FLAGS: EventTypeFlags = EventTypeFlags::from_bits_truncate(
 
 pub struct ShardCluster {
     shards: Vec<Shard>,
-    state: ShardState,
+    state: ClusterState,
 }
 
 impl ShardCluster {
@@ -54,7 +54,7 @@ impl ShardCluster {
 
         info!("Cluster with {} shard(s).", shards.len());
 
-        let state = ShardState::new(application_id, current_user_id, http);
+        let state = ClusterState::new(application_id, current_user_id, http);
 
         Ok(Self { shards, state })
     }
