@@ -10,7 +10,7 @@ use tracing::info;
 
 use cluster::ShardCluster;
 use config::Config;
-use util::{wait_shutdown, Logger, Shutdown};
+use util::{logger, wait_shutdown, Shutdown};
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -37,7 +37,7 @@ fn main() -> ExitCode {
 async fn async_main() -> LazyPermissionResult<()> {
     let config = Config::load()?;
 
-    Logger::init(&config.log);
+    logger::init(&config.log);
 
     info!("LazyPermission v{}", VERSION);
 
