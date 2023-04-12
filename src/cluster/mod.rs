@@ -1,6 +1,6 @@
 mod state;
 
-use std::error::Error;
+use std::{error::Error, sync::Arc};
 
 use futures_util::StreamExt;
 use tracing::{debug, error, info, warn};
@@ -32,7 +32,7 @@ impl ShardCluster {
     pub async fn new(config: &DiscordConfig) -> Result<Self, Box<dyn Error + Send + Sync>> {
         let token = String::from(config.token());
 
-        let http = HttpClient::new(token.clone());
+        let http = Arc::new(HttpClient::new(token.clone()));
 
         let application_id = http.current_user_application().await?.model().await?.id;
         let current_user_id = http.current_user().await?.model().await?.id;
