@@ -14,7 +14,7 @@ impl ClusterState {
     pub fn new(
         application_id: Id<ApplicationMarker>,
         current_user_id: Id<UserMarker>,
-        http: Arc<HttpClient>,
+        http: HttpClient,
     ) -> Self {
         Self(Arc::new(ClusterStateRef {
             application_id,
@@ -35,5 +35,5 @@ impl Deref for ClusterState {
 pub struct ClusterStateRef {
     pub application_id: Id<ApplicationMarker>,
     pub current_user_id: Id<UserMarker>,
-    pub http: Arc<HttpClient>,
+    pub http: HttpClient,
 }
