@@ -19,6 +19,8 @@ impl DiscordConfig {
 
 impl Debug for DiscordConfig {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Token: HIDDEN")
+        f.debug_struct("DiscordConfig")
+            .field("token", &"hidden")
+            .finish()
     }
 }

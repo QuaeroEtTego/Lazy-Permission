@@ -521,7 +521,6 @@ dependencies = [
  "envy",
  "futures-util",
  "serde",
- "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",

@@ -24,11 +24,7 @@ async fn interaction_create() {
 }
 
 fn ready(shard_id: ShardId, ready: Box<Ready>) {
-    info!(
-        "Shard {} ready with {} guild",
-        shard_id,
-        ready.guilds.len()
-    );
+    info!("Shard {} ready with {} guild", shard_id, ready.guilds.len());
 }
 
 fn resumed(shard_id: ShardId) {
