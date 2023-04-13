@@ -38,17 +38,17 @@ pub enum ConfigError {
 impl Display for ConfigError {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         match self {
-            ConfigError::Discord(inner) => {
+            ConfigError::Discord(error) => {
                 f.write_str("Invalid DiscordConfig ")?;
-                Display::fmt(inner, f)
+                Display::fmt(error, f)
             }
-            ConfigError::EnvFile(inner) => {
+            ConfigError::EnvFile(error) => {
                 f.write_str("Cannot load the .env file ")?;
-                Display::fmt(inner, f)
+                Display::fmt(error, f)
             }
-            ConfigError::Log(inner) => {
+            ConfigError::Log(error) => {
                 f.write_str("Invalid LogConfig ")?;
-                Display::fmt(inner, f)
+                Display::fmt(error, f)
             }
         }
     }
