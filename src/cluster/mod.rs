@@ -49,7 +49,7 @@ impl ShardCluster {
             .await?
             .collect::<Vec<_>>();
 
-        info!("Cluster with {} shard(s).", shards.len());
+        info!("Cluster with {} shard(s)", shards.len());
 
         let state = ClusterState::new(application_id, current_user_id, http);
 
@@ -98,10 +98,10 @@ impl ShardCluster {
                 Ok(event) => event,
                 Err(source) => {
                     if source.is_fatal() {
-                        error!("Fatal error while receiving event: {:?}.", source);
+                        error!("Fatal error while receiving event: {:?}", source);
                         return Err(source);
                     } else {
-                        warn!("Error while receiving event: {:?}.", source);
+                        warn!("Error while receiving event: {:?}", source);
                         continue;
                     }
                 }

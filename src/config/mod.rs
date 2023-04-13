@@ -1,7 +1,7 @@
 mod discord;
 mod log;
 
-use dotenv::{dotenv, Error as DotEnvError};
+use dotenv::{dotenv, Error as DotenvError};
 use envy::Error as EnvyError;
 use thiserror::Error as ThisError;
 
@@ -29,10 +29,10 @@ impl Config {
 
 #[derive(Debug, ThisError)]
 pub enum ConfigError {
-    #[error("Invalid DiscordConfig: {0}.")]
+    #[error("Invalid DiscordConfig: {0}")]
     Discord(EnvyError),
-    #[error("Cannot load the .env file: {0}.")]
-    EnvFile(DotEnvError),
-    #[error("Invalid LogConfig: {0}.")]
+    #[error("Cannot load the .env file: {0}")]
+    EnvFile(DotenvError),
+    #[error("Invalid LogConfig: {0}")]
     Log(EnvyError),
 }

@@ -57,7 +57,7 @@ async fn async_main() -> LazyPermissionResult<()> {
 
     cluster_shutdown.shutdown().await;
 
-    info!("Shutdown complete!");
+    info!("Shutdown complete");
 
     Ok(())
 }
