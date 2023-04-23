@@ -1,10 +1,9 @@
 mod discord;
 mod log;
 
-use std::{error::Error, fmt::{Display, Formatter, Result as FmtResult}};
-
-use dotenv::{dotenv, Error as DotenvError};
+use dotenvy::{dotenv, Error as DotenvError};
 use envy::Error as EnvyError;
+use thiserror::Error as ThisError;
 
 pub use discord::DiscordConfig;
 pub use log::LogConfig;
@@ -28,30 +27,12 @@ impl Config {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, ThisError)]
 pub enum ConfigError {
+    #[error("Invalid DiscordConfig {0}")]
     Discord(EnvyError),
+    #[error("Cannot load the .env file {0}")]
     EnvFile(DotenvError),
+    #[error("Invalid LogConfig {0}")]
     Log(EnvyError),
 }
-
-impl Display for ConfigError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        match self {
-            ConfigError::Discord(error) => {
-                f.write_str("Invalid DiscordConfig ")?;
-                Display::fmt(error, f)
-            }
-            ConfigError::EnvFile(error) => {
-                f.write_str("Cannot load the .env file ")?;
-                Display::fmt(error, f)
-            }
-            ConfigError::Log(error) => {
-                f.write_str("Invalid LogConfig ")?;
-                Display::fmt(error, f)
-            }
-        }
-    }
-}
-
-impl Error for ConfigError {}

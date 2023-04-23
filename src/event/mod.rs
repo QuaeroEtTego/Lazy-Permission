@@ -1,32 +1,32 @@
-use tracing::info;
-
+use tracing::{debug, info};
 use twilight_model::gateway::{event::Event, payload::incoming::Ready, ShardId};
 
-use super::cluster::ClusterState;
+use super::bot::BotState;
+use super::interaction;
 use super::util::ShutdownSubscriber;
 
 pub async fn handle(
-    _state: ClusterState,
-    event: Event,
     shard_id: ShardId,
+    event: Event,
+    state: BotState,
     mut _shutdown_subscriber: ShutdownSubscriber,
 ) {
     match event {
-        Event::InteractionCreate(_) => {}
-        Event::Ready(e) => ready(shard_id, e),
+        Event::InteractionCreate(e) => interaction::handle((*e).0, state).await,
+        Event::Ready(e) => ready(shard_id, *e),
         Event::Resumed => resumed(shard_id),
         _ => {}
     }
 }
 
-async fn interaction_create() {
-    todo!()
-}
-
-fn ready(shard_id: ShardId, ready: Box<Ready>) {
-    info!("Shard {} ready with {} guild", shard_id, ready.guilds.len());
+fn ready(shard_id: ShardId, ready: Ready) {
+    info!(
+        "Shard {} ready with {} guild(s)",
+        shard_id,
+        ready.guilds.len()
+    );
 }
 
 fn resumed(shard_id: ShardId) {
-    info!("Shard {} resumed", shard_id);
+    debug!("Shard {} resumed", shard_id);
 }

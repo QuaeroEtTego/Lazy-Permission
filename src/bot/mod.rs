@@ -1,6 +1,7 @@
 mod state;
 
 use std::error::Error;
+use std::sync::Arc;
 
 use futures_util::StreamExt;
 use tracing::{debug, error, info, warn};
@@ -21,18 +22,18 @@ use super::config::DiscordConfig;
 use super::event;
 use super::util::{Shutdown, ShutdownSubscriber};
 
-pub use state::ClusterState;
+pub use state::BotState;
 
-pub struct ShardCluster {
+pub struct Bot {
     shards: Vec<Shard>,
-    state: ClusterState,
+    state: BotState,
 }
 
-impl ShardCluster {
+impl Bot {
     pub async fn new(config: &DiscordConfig) -> Result<Self, Box<dyn Error + Send + Sync>> {
         let token = String::from(config.token());
 
-        let http = HttpClient::new(token.clone());
+        let http = Arc::new(HttpClient::new(token.clone()));
 
         let application_id = http.current_user_application().await?.model().await?.id;
         let current_user_id = http.current_user().await?.model().await?.id;
@@ -49,14 +50,14 @@ impl ShardCluster {
             .await?
             .collect::<Vec<_>>();
 
-        info!("Cluster with {} shard(s)", shards.len());
+        info!("Bot with {} shard(s)", shards.len());
 
-        let state = ClusterState::new(application_id, current_user_id, http);
+        let state = BotState::new(application_id, current_user_id, http);
 
         Ok(Self { shards, state })
     }
 
-    pub async fn set_interactions(&self, commands: &[Command]) -> Result<(), twilight_http::Error> {
+    pub async fn set_commands(&self, commands: &[Command]) -> Result<(), twilight_http::Error> {
         self.state
             .http
             .interaction(self.state.application_id)
@@ -110,9 +111,9 @@ impl ShardCluster {
             let state = self.state.clone();
 
             tokio::spawn(event::handle(
-                state,
-                event,
                 shard.id(),
+                event,
+                state,
                 shutdown.subscriber(),
             ));
         }

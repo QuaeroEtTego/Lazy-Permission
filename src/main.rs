@@ -1,6 +1,7 @@
-mod cluster;
+mod bot;
 mod config;
 mod event;
+mod interaction;
 mod util;
 
 use std::{env, error::Error, process::ExitCode};
@@ -8,7 +9,7 @@ use std::{env, error::Error, process::ExitCode};
 use tokio::runtime::Builder;
 use tracing::info;
 
-use cluster::ShardCluster;
+use bot::Bot;
 use config::Config;
 use util::{logger, wait_shutdown, Shutdown};
 
@@ -41,21 +42,21 @@ async fn async_main() -> LazyPermissionResult<()> {
 
     info!("LazyPermission v{}", VERSION);
 
-    let cluster = ShardCluster::new(&config.discord).await?;
-    let cluster_shutdown = Shutdown::new();
+    let bot = Bot::new(&config.discord).await?;
+    let bot_shutdown = Shutdown::new();
 
-    cluster.set_interactions(&[]).await?;
+    bot.set_commands(&[]).await?;
 
-    let cluster_run = tokio::spawn(cluster.start(cluster_shutdown.subscriber()));
+    let bot_run = tokio::spawn(bot.start(bot_shutdown.subscriber()));
 
     tokio::select! {
-        result = cluster_run => result??,
+        result = bot_run => result??,
         _ = wait_shutdown() => (),
     }
 
     info!("Shutting down LazyPermission, ending the last tasks...");
 
-    cluster_shutdown.shutdown().await;
+    bot_shutdown.shutdown().await;
 
     info!("Shutdown complete");
 
