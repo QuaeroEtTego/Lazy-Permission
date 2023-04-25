@@ -1,7 +1,6 @@
 use std::error::Error;
 
 use tracing::{error, warn};
-use twilight_model::channel::message::Embed;
 use twilight_model::{
     application::interaction::{Interaction, InteractionData, InteractionType},
     channel::message::MessageFlags,
