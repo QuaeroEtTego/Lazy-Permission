@@ -1,6 +1,7 @@
 use std::error::Error;
 
 use tracing::{error, warn};
+use twilight_model::channel::message::Embed;
 use twilight_model::{
     application::interaction::{Interaction, InteractionData, InteractionType},
     channel::message::MessageFlags,
@@ -26,27 +27,24 @@ pub async fn handle(interaction: Interaction, state: BotState) {
     }
     .await;
 
-    let response = match result {
-        Ok(response) => response,
-        Err(error) => {
-            error!("Failed to execute a command {:?}", error);
+    let response = result.unwrap_or_else(|error| {
+        error!("Failed to execute a command {:?}", error);
 
-            let embed = EmbedBuilder::new()
-                .title("Internal Error")
-                .color(Color::Red.into())
-                .build();
+        let embed = EmbedBuilder::new()
+            .title("Internal Error")
+            .color(Color::Red.into())
+            .build();
 
-            InteractionResponse {
-                kind: InteractionResponseType::ChannelMessageWithSource,
-                data: Some(
-                    InteractionResponseDataBuilder::new()
-                        .embeds([embed])
-                        .flags(MessageFlags::EPHEMERAL)
-                        .build(),
-                ),
-            }
+        InteractionResponse {
+            kind: InteractionResponseType::ChannelMessageWithSource,
+            data: Some(
+                InteractionResponseDataBuilder::new()
+                    .embeds([embed])
+                    .flags(MessageFlags::EPHEMERAL)
+                    .build(),
+            ),
         }
-    };
+    });
 
     if let Err(error) = state
         .http
@@ -59,8 +57,8 @@ pub async fn handle(interaction: Interaction, state: BotState) {
 }
 
 async fn handle_command(interaction: Interaction, _state: &BotState) -> InteractionResult {
-    let data = match &interaction.data {
-        Some(InteractionData::ApplicationCommand(data)) => &**data,
+    let _name = match &interaction.data {
+        Some(InteractionData::ApplicationCommand(data)) => &*data.name,
         _ => {
             return Ok(InteractionResponse {
                 kind: InteractionResponseType::ChannelMessageWithSource,
@@ -73,8 +71,6 @@ async fn handle_command(interaction: Interaction, _state: &BotState) -> Interact
             })
         }
     };
-
-    let _name = &*data.name;
 
     Ok(InteractionResponse {
         kind: InteractionResponseType::ChannelMessageWithSource,
