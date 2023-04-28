@@ -11,21 +11,21 @@ envy = "0.4.2"
 
 futures-util = { version = "0.3.28", default-features = false }
 
-serde = "1.0.159"
+serde = "1.0.160"
 
 thiserror = "1.0.40"
 
-tokio = { version = "1.27.0", default-features = false, features = ["macros", "rt-multi-thread", "signal", "time"] }
+tokio = { version = "1.28.0", default-features = false, features = ["macros", "rt-multi-thread", "signal", "time"] }
 
-tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+tracing = "0.1.38"
+tracing-subscriber = "0.3.17"
 
-twilight-cache-inmemory = { version = "0.15.1", features = ["permission-calculator"]}
-twilight-gateway = { version = "0.15.1", default-features = false, features = ["rustls-webpki-roots", "simd-json", "zlib-simd", "twilight-http"] }
-twilight-http = { version = "0.15.1", default-features = false, features = ["decompression", "rustls-webpki-roots", "simd-json", "trust-dns"] }
+twilight-cache-inmemory = { version = "0.15.2", features = ["permission-calculator"]}
+twilight-gateway = { version = "0.15.2", default-features = false, features = ["rustls-webpki-roots", "simd-json", "zlib-simd", "twilight-http"] }
+twilight-http = { version = "0.15.2", default-features = false, features = ["decompression", "rustls-webpki-roots", "simd-json", "trust-dns"] }
 twilight-interactions = "0.15.1"
-twilight-model = "0.15.1"
-twilight-util = { version = "0.15.1", features = ["builder", "permission-calculator"] }
+twilight-model = "0.15.2"
+twilight-util = { version = "0.15.2", features = ["builder", "permission-calculator"] }
 
 
 [profile.release]
