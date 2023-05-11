@@ -46,8 +46,7 @@ pub async fn handle(interaction: Interaction, state: BotState) {
     });
 
     if let Err(error) = state
-        .http
-        .interaction(state.application_id)
+        .interaction()
         .create_response(interaction_id, &interaction_token, &response)
         .await
     {

@@ -1,6 +1,7 @@
 use std::{ops::Deref, sync::Arc};
 
 use twilight_http::Client as HttpClient;
+use twilight_http::client::InteractionClient;
 use twilight_model::id::{
     marker::{ApplicationMarker, UserMarker},
     Id,
@@ -14,7 +15,7 @@ impl BotState {
     pub fn new(
         application_id: Id<ApplicationMarker>,
         current_user_id: Id<UserMarker>,
-        http: Arc<HttpClient>,
+        http: HttpClient,
     ) -> Self {
         Self(Arc::new(BotStateRef {
             application_id,
@@ -35,5 +36,11 @@ impl Deref for BotState {
 pub struct BotStateRef {
     pub application_id: Id<ApplicationMarker>,
     pub current_user_id: Id<UserMarker>,
-    pub http: Arc<HttpClient>,
+    pub http: HttpClient,
+}
+
+impl BotStateRef {
+    pub fn interaction(&self) -> InteractionClient {
+        self.http.interaction(self.application_id)
+    }
 }
