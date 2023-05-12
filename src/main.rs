@@ -38,7 +38,7 @@ fn main() -> ExitCode {
 async fn async_main() -> LazyPermissionResult<()> {
     let config = Config::load()?;
 
-    logger::init(&config.log);
+    logger::init(&config.log)?;
 
     info!("LazyPermission v{}", VERSION);
 
