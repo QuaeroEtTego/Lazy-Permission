@@ -1,13 +1,4 @@
-use Color::*;
-
+#[repr(u32)]
 pub enum Color {
-    Red,
-}
-
-impl From<Color> for u32 {
-    fn from(color: Color) -> Self {
-        match color {
-            Red => 0xff6464,
-        }
-    }
+    Red = 0xff6464,
 }

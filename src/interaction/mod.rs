@@ -31,7 +31,7 @@ pub async fn handle(interaction: Interaction, state: BotState) {
 
         let embed = EmbedBuilder::new()
             .title("Internal Error")
-            .color(u32::from(Color::Red))
+            .color(Color::Red as u32)
             .build();
 
         InteractionResponse {
