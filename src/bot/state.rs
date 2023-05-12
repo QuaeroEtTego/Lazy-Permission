@@ -39,7 +39,7 @@ pub struct BotStateRef {
 }
 
 impl BotStateRef {
-    pub fn interaction(&self) -> InteractionClient {
+    pub const fn interaction(&self) -> InteractionClient {
         self.http.interaction(self.application_id)
     }
 }

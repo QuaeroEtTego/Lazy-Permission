@@ -12,8 +12,8 @@ impl DiscordConfig {
         envy::prefixed("DISCORD_").from_env::<DiscordConfig>()
     }
 
-    pub fn token(&self) -> &str {
-        self.token.as_ref()
+    pub const fn token(&self) -> &str {
+        &self.token
     }
 }
 

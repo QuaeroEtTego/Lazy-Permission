@@ -8,13 +8,13 @@ use tracing_subscriber::{
 use super::LogConfig;
 
 pub fn init(config: &LogConfig) -> Result<(), Box<dyn Error + Send + Sync>> {
-    let default_level = LevelFilter::from_str(&config.lib)?;
+    let default_level = LevelFilter::from_str(config.lib())?;
 
     tracing_subscriber::fmt()
         .with_env_filter(
             EnvFilter::from_default_env()
                 .add_directive(Directive::from(default_level))
-                .add_directive(directive("lazy_permission", &config.app)?),
+                .add_directive(directive("lazy_permission", config.app())?),
         )
         .init();
 
