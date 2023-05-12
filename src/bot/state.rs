@@ -1,7 +1,6 @@
 use std::{ops::Deref, sync::Arc};
 
-use twilight_http::Client as HttpClient;
-use twilight_http::client::InteractionClient;
+use twilight_http::client::{Client as HttpClient, InteractionClient};
 use twilight_model::id::{
     marker::{ApplicationMarker, UserMarker},
     Id,

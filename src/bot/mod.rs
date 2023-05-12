@@ -123,7 +123,7 @@ impl Bot {
 fn presence() -> UpdatePresencePayload {
     let activity = MinimalActivity {
         kind: Default::default(),
-        name: "Lazy with permissions".to_string(),
+        name: String::from("Lazy with permissions"),
         url: None,
     };
 
