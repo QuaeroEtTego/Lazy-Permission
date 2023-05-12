@@ -13,7 +13,7 @@ use twilight_model::{
     application::command::Command,
     gateway::{
         payload::outgoing::update_presence::UpdatePresencePayload,
-        presence::{MinimalActivity, Status},
+        presence::{Activity, MinimalActivity, Status},
     },
 };
 
@@ -121,14 +121,14 @@ impl Bot {
 }
 
 fn presence() -> UpdatePresencePayload {
-    let activity = MinimalActivity {
+    let minimal_activity = MinimalActivity {
         kind: Default::default(),
         name: String::from("Lazy with permissions"),
         url: None,
     };
 
     UpdatePresencePayload {
-        activities: vec![activity.into()],
+        activities: vec![Activity::from(minimal_activity)],
         afk: false,
         since: None,
         status: Status::Online,
