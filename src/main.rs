@@ -23,7 +23,7 @@ fn main() -> ExitCode {
         .enable_all()
         .build()
         .map(|runtime| match runtime.block_on(async_main()) {
-            Ok(_) => ExitCode::SUCCESS,
+            Ok(()) => ExitCode::SUCCESS,
             Err(e) => {
                 eprintln!("Fatal error: {e}");
                 ExitCode::FAILURE
