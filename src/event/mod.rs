@@ -28,5 +28,5 @@ fn ready(shard_id: ShardId, ready: Ready) {
 }
 
 fn resumed(shard_id: ShardId) {
-    debug!("Shard {} resumed", shard_id);
+    debug!("Shard {} resumed", shard_id.itoa());
 }

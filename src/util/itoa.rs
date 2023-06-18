@@ -1,8 +1,22 @@
 use itoa::Buffer;
 use twilight_model::gateway::ShardId;
+use twilight_model::id::Id;
 
 pub trait Itoa {
     fn itoa(&self) -> String;
+}
+
+impl<T> Itoa for Id<T> {
+    fn itoa(&self) -> String {
+        let mut buffer = Buffer::new();
+
+        let size = self.get().ilog10() + 1;
+
+        let mut format = String::with_capacity(size as usize);
+        format.push_str(buffer.format(self.get()));
+
+        format
+    }
 }
 
 impl Itoa for ShardId {
