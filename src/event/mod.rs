@@ -3,7 +3,7 @@ use twilight_model::gateway::{event::Event, payload::incoming::Ready, ShardId};
 
 use super::bot::BotState;
 use super::interaction;
-use super::util::ShutdownSubscriber;
+use super::util::{Itoa, ShutdownSubscriber};
 
 pub async fn handle(
     shard_id: ShardId,
@@ -22,7 +22,7 @@ pub async fn handle(
 fn ready(shard_id: ShardId, ready: Ready) {
     info!(
         "Shard {} ready with {} guild(s)",
-        shard_id,
+        shard_id.itoa(),
         ready.guilds.len()
     );
 }

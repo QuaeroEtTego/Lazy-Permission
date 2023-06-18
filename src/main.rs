@@ -1,17 +1,17 @@
-mod bot;
-mod config;
-mod event;
-mod interaction;
-mod util;
-
 use std::{env, error::Error, process::ExitCode};
 
 use tokio::runtime::Builder;
 use tracing::info;
 
-use bot::Bot;
-use config::Config;
-use util::{logger, wait_shutdown, Shutdown};
+use self::bot::Bot;
+use self::config::Config;
+use self::util::{logger, wait_shutdown, Shutdown};
+
+mod bot;
+mod config;
+mod event;
+mod interaction;
+mod util;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 

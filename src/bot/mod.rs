@@ -1,5 +1,3 @@
-mod state;
-
 use std::error::Error;
 
 use futures_util::StreamExt;
@@ -19,9 +17,11 @@ use twilight_model::{
 
 use super::config::DiscordConfig;
 use super::event;
-use super::util::{Shutdown, ShutdownSubscriber};
+use super::util::{Itoa, Shutdown, ShutdownSubscriber};
 
-pub use state::BotState;
+pub use self::state::BotState;
+
+mod state;
 
 pub struct Bot {
     shards: Vec<Shard>,
@@ -87,7 +87,7 @@ impl Bot {
         while let Some((shard, event)) = stream.next().await {
             debug!(
                 "Shard {} | Status {:?} | Latency {:?} - {:?}",
-                shard.id(),
+                shard.id().itoa(),
                 shard.status(),
                 shard.latency().recent(),
                 shard.latency().average()

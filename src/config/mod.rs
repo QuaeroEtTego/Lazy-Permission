@@ -1,12 +1,12 @@
-mod discord;
-mod log;
-
 use dotenvy::{dotenv, Error as DotenvError};
 use envy::Error as EnvyError;
 use thiserror::Error as ThisError;
 
-pub use discord::DiscordConfig;
-pub use log::LogConfig;
+pub use self::discord::DiscordConfig;
+pub use self::log::LogConfig;
+
+mod discord;
+mod log;
 
 #[derive(Debug)]
 pub struct Config {

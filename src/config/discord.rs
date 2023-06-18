@@ -1,6 +1,7 @@
+use std::fmt::{Debug, Formatter};
+
 use envy::Error;
 use serde::Deserialize;
-use std::fmt::{Debug, Formatter};
 
 #[derive(Deserialize)]
 pub struct DiscordConfig {
@@ -9,7 +10,7 @@ pub struct DiscordConfig {
 
 impl DiscordConfig {
     pub(super) fn new() -> Result<Self, Error> {
-        envy::prefixed("DISCORD_").from_env::<DiscordConfig>()
+        envy::prefixed("DISCORD_").from_env()
     }
 
     pub const fn token(&self) -> &str {

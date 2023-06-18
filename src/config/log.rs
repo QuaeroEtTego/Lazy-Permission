@@ -9,7 +9,7 @@ pub struct LogConfig {
 
 impl LogConfig {
     pub(super) fn new() -> Result<Self, Error> {
-        envy::prefixed("LOG_").from_env::<LogConfig>()
+        envy::prefixed("LOG_").from_env()
     }
 
     pub const fn app(&self) -> &str {
