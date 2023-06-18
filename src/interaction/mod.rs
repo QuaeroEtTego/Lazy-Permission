@@ -3,13 +3,14 @@ use std::error::Error;
 use tracing::{error, warn};
 use twilight_model::{
     application::interaction::{Interaction, InteractionData, InteractionType},
-    channel::message::MessageFlags,
     http::interaction::{InteractionResponse, InteractionResponseType},
 };
-use twilight_util::builder::{embed::EmbedBuilder, InteractionResponseDataBuilder};
+use twilight_util::builder::InteractionResponseDataBuilder;
 
 use super::bot::BotState;
 use super::util::Color;
+
+mod embed;
 
 type InteractionResult = Result<InteractionResponse, Box<dyn Error + Send + Sync>>;
 
@@ -28,21 +29,7 @@ pub async fn handle(interaction: Interaction, state: BotState) {
 
     let response = result.unwrap_or_else(|error| {
         error!("Failed to execute a command {:?}", error);
-
-        let embed = EmbedBuilder::new()
-            .title("Internal Error")
-            .color(Color::Red as u32)
-            .build();
-
-        InteractionResponse {
-            kind: InteractionResponseType::ChannelMessageWithSource,
-            data: Some(
-                InteractionResponseDataBuilder::new()
-                    .embeds([embed])
-                    .flags(MessageFlags::EPHEMERAL)
-                    .build(),
-            ),
-        }
+        embed::internal_error()
     });
 
     if let Err(error) = state
@@ -58,15 +45,11 @@ async fn handle_command(interaction: Interaction, _state: &BotState) -> Interact
     let _name = match &interaction.data {
         Some(InteractionData::ApplicationCommand(data)) => &*data.name,
         _ => {
-            return Ok(InteractionResponse {
-                kind: InteractionResponseType::ChannelMessageWithSource,
-                data: Some(
-                    InteractionResponseDataBuilder::new()
-                        .content("Interaction data not found")
-                        .flags(MessageFlags::EPHEMERAL)
-                        .build(),
-                ),
-            })
+            warn!(
+                "Interaction application command data not found {:?}",
+                interaction
+            );
+            return Ok(embed::interaction_data_not_found());
         }
     };
 
