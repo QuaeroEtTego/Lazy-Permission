@@ -22,8 +22,8 @@ impl Itoa for ShardId {
     fn itoa(&self) -> String {
         let mut buffer = Buffer::new();
 
-        let size = self.number().checked_ilog10().map_or_else(|| 1, |n| n + 1)
-            + self.total().checked_ilog10().map_or_else(|| 1, |n| n + 1)
+        let size = self.number().checked_ilog10().map_or(1, |n| n + 1)
+            + self.total().checked_ilog10().map_or(1, |n| n + 1)
             + 1;
 
         let mut format = String::with_capacity(size as usize);
