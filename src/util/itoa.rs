@@ -1,6 +1,5 @@
 use itoa::Buffer;
-use twilight_model::gateway::ShardId;
-use twilight_model::id::Id;
+use twilight_model::{gateway::ShardId, id::Id};
 
 pub trait Itoa {
     fn itoa(&self) -> String;
