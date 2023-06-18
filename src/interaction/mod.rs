@@ -16,7 +16,7 @@ type InteractionResult = Result<InteractionResponse, Box<dyn Error + Send + Sync
 
 pub async fn handle(interaction: Interaction, state: BotState) {
     let interaction_id = interaction.id;
-    let interaction_token = interaction.token.clone();
+    let interaction_token = &*interaction.token.clone();
 
     let result = match &interaction.kind {
         InteractionType::ApplicationCommand => handle_command(interaction, &state),
@@ -29,12 +29,12 @@ pub async fn handle(interaction: Interaction, state: BotState) {
 
     let response = result.unwrap_or_else(|error| {
         error!("Failed to execute a command {:?}", error);
-        embed::internal_error()
+        embed::error::internal_error()
     });
 
     if let Err(error) = state
         .interaction()
-        .create_response(interaction_id, &interaction_token, &response)
+        .create_response(interaction_id, interaction_token, &response)
         .await
     {
         error!("Failed to create an interaction response {:?}", error);
@@ -49,7 +49,7 @@ async fn handle_command(interaction: Interaction, _state: &BotState) -> Interact
                 "Interaction application command data not found {:?}",
                 interaction
             );
-            return Ok(embed::interaction_data_not_found());
+            return Ok(embed::error::interaction_data_not_found());
         }
     };
 
